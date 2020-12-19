@@ -18,5 +18,12 @@ namespace LaughSeenShpi.DataAccess.Data
 
         public DbSet<Room> Room { get; set; }
 
+        public DbSet<RoomMembers> RoomMembers { get; set; }
+
+
+        public DbSet<Messages> Messages { get; set; }
+
+
+
     }
 }

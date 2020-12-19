@@ -4,46 +4,22 @@ using LaughSeenShpi.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaughSeenShpi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201219114809_AddRoomMembersModel")]
+    partial class AddRoomMembersModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("LaughSeenShpi.Models.Messages", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RoomMemberID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SeenTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("SendTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("RoomMemberID");
-
-                    b.ToTable("Messages");
-                });
 
             modelBuilder.Entity("LaughSeenShpi.Models.Room", b =>
                 {
@@ -70,12 +46,12 @@ namespace LaughSeenShpi.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomID")
+                    b.Property<int?>("RoomIdID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RoomID");
+                    b.HasIndex("RoomIdID");
 
                     b.ToTable("RoomMembers");
                 });
@@ -276,18 +252,11 @@ namespace LaughSeenShpi.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LaughSeenShpi.Models.Messages", b =>
-                {
-                    b.HasOne("LaughSeenShpi.Models.RoomMembers", "RoomMember")
-                        .WithMany()
-                        .HasForeignKey("RoomMemberID");
-                });
-
             modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
                 {
-                    b.HasOne("LaughSeenShpi.Models.Room", "Room")
+                    b.HasOne("LaughSeenShpi.Models.Room", "RoomId")
                         .WithMany()
-                        .HasForeignKey("RoomID");
+                        .HasForeignKey("RoomIdID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
