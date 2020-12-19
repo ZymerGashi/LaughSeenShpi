@@ -1,7 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
- @using LaughSeenShpi.Models
+﻿
+ @model LaughSeenShpi.Models.Room
 
 
 <div class="row vh-100 "  >
@@ -14,12 +12,12 @@
                 <label for="exampleInputEmail1" class="form-text" style="font-size:25px">Room Name</label>
             </div>
             <div class="col-sm-9 float-left">
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter room name">
+                <input type="text" class="form-control" asp-for="@Model.Name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter room name">
                 <small id="emailHelp" class="form-text text-muted">Enjoy chatting with your friends and your loving ones</small>
             </div>
 
             <div class="col-sm-3 float-left">
-                <button type="submit"  class="btn btn-primary col-sm-12">Submit room name</button>
+                <button type="submit" asp-controller="CreateRoom" asp-action="Post" class="btn btn-primary col-sm-12">Submit room name</button>
             </div>
 
         </div>

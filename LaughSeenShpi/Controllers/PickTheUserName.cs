@@ -9,40 +9,42 @@ using System.Threading.Tasks;
 
 namespace LaughSeenShpi.Controllers
 {
-    public class CreateRoomController : Controller
+    public class PickTheUserName : Controller
     {
-
         private readonly ApplicationDbContext _db;
-        private DbSet<Room> dbSet;
-        public CreateRoomController(ApplicationDbContext db)
+        private DbSet<RoomMembers> dbSet;
+        public PickTheUserName(ApplicationDbContext db)
         {
             _db = db;
-            this.dbSet = db.Set<Room>();
+            this.dbSet = db.Set<RoomMembers>();
         }
 
 
 
 
-        public IActionResult Index()
+        public IActionResult Index(Room room)
         {
+
+            ViewBag.Room = room;
             return View();
         }
 
+
+
         [HttpPost]
-        public IActionResult Post(Room room)
+        public IActionResult Post(RoomMembers roomMember)
         {
-
-
-            dbSet.Add(room);
+            dbSet.Add(roomMember);
 
             _db.SaveChanges();
 
             //return View("Room/Index",room);
 
-            return RedirectToAction("Index", "PickTheUserName", room);
-        
+            return RedirectToAction("Index", "Room", roomMember);
+
         }
 
-     
+
+
     }
 }
