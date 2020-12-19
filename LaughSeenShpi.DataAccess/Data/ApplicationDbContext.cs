@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LaughSeenShpi.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,8 @@ namespace LaughSeenShpi.DataAccess.Data
 
         }
 
+
+        public DbSet<Room> Room { get; set; }
 
     }
 }
