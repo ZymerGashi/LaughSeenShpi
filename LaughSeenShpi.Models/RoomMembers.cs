@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LaughSeenShpi.Models
@@ -9,12 +10,14 @@ namespace LaughSeenShpi.Models
     {
         [Key]
 
-        public int ID { get; set; }
+        public int MemberID { get; set; }
 
-        public string Name { get; set; }
+        public string MemberName { get; set; }
 
-        public  Room Room { get; set; }
+        [ForeignKey("Room")] 
+        public int MemberRoomId { get; set; }
 
+        public Room Room { get; set; }
 
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LaughSeenShpi.DataAccess.Migrations
 {
-    public partial class CreateRoomTable : Migration
+    public partial class AddRoomRoomMembersAndMessagesTablesWithForeignKeys : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,49 @@ namespace LaughSeenShpi.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(nullable: true),
+                    RoomMember = table.Column<int>(nullable: false),
+                    SendTime = table.Column<DateTime>(nullable: false),
+                    SeenTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Room",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Room", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoomMembers",
+                columns: table => new
+                {
+                    MemberID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MemberName = table.Column<string>(nullable: true),
+                    MemberRoomId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomMembers", x => x.MemberID);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,6 +251,15 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Room");
+
+            migrationBuilder.DropTable(
+                name: "RoomMembers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaughSeenShpi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201219114809_AddRoomMembersModel")]
-    partial class AddRoomMembersModel
+    [Migration("20201220105108_AddForeignKeyToRoomMembers")]
+    partial class AddForeignKeyToRoomMembers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,30 @@ namespace LaughSeenShpi.DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("LaughSeenShpi.Models.Messages", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoomMember")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SeenTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("SendTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Messages");
+                });
 
             modelBuilder.Entity("LaughSeenShpi.Models.Room", b =>
                 {
@@ -38,20 +62,20 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
             modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("MemberID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MemberName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomIdID")
+                    b.Property<int>("MemberRoomId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("MemberID");
 
-                    b.HasIndex("RoomIdID");
+                    b.HasIndex("MemberRoomId");
 
                     b.ToTable("RoomMembers");
                 });
@@ -254,9 +278,11 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
             modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
                 {
-                    b.HasOne("LaughSeenShpi.Models.Room", "RoomId")
+                    b.HasOne("LaughSeenShpi.Models.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomIdID");
+                        .HasForeignKey("MemberRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LaughSeenShpi.Models
@@ -12,7 +13,11 @@ namespace LaughSeenShpi.Models
 
         public string Content { get; set; }
 
-        public RoomMembers RoomMember { get; set; }
+        [ForeignKey("RoomMembers")]
+        public int RoomMemberId { get; set; }
+
+        public RoomMembers RoomMembers { get; set; }
+
 
         public DateTime SendTime{ get; set; }
 

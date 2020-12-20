@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaughSeenShpi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201219115701_AddMessagesModel")]
-    partial class AddMessagesModel
+    [Migration("20201220104737_AddRoomRoomMembersAndMessagesTablesWithForeignKeys")]
+    partial class AddRoomRoomMembersAndMessagesTablesWithForeignKeys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,7 @@ namespace LaughSeenShpi.DataAccess.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomMemberID")
+                    b.Property<int>("RoomMember")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SeenTime")
@@ -41,8 +41,6 @@ namespace LaughSeenShpi.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("RoomMemberID");
 
                     b.ToTable("Messages");
                 });
@@ -64,20 +62,18 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
             modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("MemberID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MemberName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomID")
+                    b.Property<int>("MemberRoomId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("RoomID");
+                    b.HasKey("MemberID");
 
                     b.ToTable("RoomMembers");
                 });
@@ -276,20 +272,6 @@ namespace LaughSeenShpi.DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("LaughSeenShpi.Models.Messages", b =>
-                {
-                    b.HasOne("LaughSeenShpi.Models.RoomMembers", "RoomMember")
-                        .WithMany()
-                        .HasForeignKey("RoomMemberID");
-                });
-
-            modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
-                {
-                    b.HasOne("LaughSeenShpi.Models.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

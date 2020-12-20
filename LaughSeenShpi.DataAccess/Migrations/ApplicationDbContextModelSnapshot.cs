@@ -29,7 +29,7 @@ namespace LaughSeenShpi.DataAccess.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomMemberID")
+                    b.Property<int>("RoomMemberId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SeenTime")
@@ -40,7 +40,7 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RoomMemberID");
+                    b.HasIndex("RoomMemberId");
 
                     b.ToTable("Messages");
                 });
@@ -62,20 +62,20 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
             modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("MemberID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MemberName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomID")
+                    b.Property<int>("MemberRoomId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("MemberID");
 
-                    b.HasIndex("RoomID");
+                    b.HasIndex("MemberRoomId");
 
                     b.ToTable("RoomMembers");
                 });
@@ -278,16 +278,20 @@ namespace LaughSeenShpi.DataAccess.Migrations
 
             modelBuilder.Entity("LaughSeenShpi.Models.Messages", b =>
                 {
-                    b.HasOne("LaughSeenShpi.Models.RoomMembers", "RoomMember")
+                    b.HasOne("LaughSeenShpi.Models.RoomMembers", "RoomMembers")
                         .WithMany()
-                        .HasForeignKey("RoomMemberID");
+                        .HasForeignKey("RoomMemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LaughSeenShpi.Models.RoomMembers", b =>
                 {
                     b.HasOne("LaughSeenShpi.Models.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomID");
+                        .HasForeignKey("MemberRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

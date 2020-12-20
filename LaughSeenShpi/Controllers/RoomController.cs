@@ -1,5 +1,7 @@
 ﻿using LaughSeenShpi.Models;
+using LaughSeenShpi.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace LaughSeenShpi.Controllers
     {
         public IActionResult Index(RoomMembers roomMembers)
         {
+            ViewBag.messages = JsonConvert.DeserializeObject<IEnumerable<Messages>>( TempData["messages"].ToString());
+
             return View(roomMembers);
         }
     }

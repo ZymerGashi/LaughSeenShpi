@@ -1,7 +1,9 @@
 ﻿using LaughSeenShpi.DataAccess.Data;
 using LaughSeenShpi.Models;
+using LaughSeenShpi.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,6 @@ namespace LaughSeenShpi.Controllers
 
         public IActionResult Index(Room room)
         {
-
             ViewBag.Room = room;
             return View();
         }
@@ -38,13 +39,36 @@ namespace LaughSeenShpi.Controllers
 
             _db.SaveChanges();
 
+
+            var messages = GetMessages(roomMember.MemberRoomId);
+
+
+            TempData["messages"] = JsonConvert.SerializeObject( messages);
+
+            // ViewBag.messages = messages;
+
+
             //return View("Room/Index",room);
 
             return RedirectToAction("Index", "Room", roomMember);
-
         }
 
 
 
+        public IEnumerable<Messages> GetMessages(int RoomId)
+        {
+
+            var messages = _db.Room.Where(s => s.ID == RoomId)
+                .Join(_db.RoomMembers, r => r.ID, rm => rm.MemberRoomId, (r, rm) => rm)
+                .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m)
+                .ToList();
+
+            return messages;
+
+
+
+
+        }
     }
+
 }

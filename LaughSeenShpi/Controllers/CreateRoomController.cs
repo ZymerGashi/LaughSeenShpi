@@ -32,14 +32,23 @@ namespace LaughSeenShpi.Controllers
         public IActionResult Post(Room room)
         {
 
+            Room existingRoom;
 
-            dbSet.Add(room);
+            existingRoom = _db.Room.Where(s => s.Name == room.Name).FirstOrDefault();
 
-            _db.SaveChanges();
 
+
+            if (existingRoom == null)
+            {
+
+
+                dbSet.Add(room);
+
+                _db.SaveChanges();
+            }
             //return View("Room/Index",room);
 
-            return RedirectToAction("Index", "PickTheUserName", room);
+            return RedirectToAction("Index", "PickTheUserName", existingRoom==null ?  room:existingRoom);
         
         }
 
