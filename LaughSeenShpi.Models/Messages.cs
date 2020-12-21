@@ -24,5 +24,8 @@ namespace LaughSeenShpi.Models
         public DateTime SeenTime { get; set; }
 
 
+        public string socketId { get; set; }
+
+
     }
 }

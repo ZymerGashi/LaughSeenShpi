@@ -13,7 +13,8 @@ namespace LaughSeenShpi.Controllers
     {
         public IActionResult Index(RoomMembers roomMembers)
         {
-            ViewBag.messages = JsonConvert.DeserializeObject<IEnumerable<Messages>>( TempData["messages"].ToString());
+            //ViewBag.messages = JsonConvert.DeserializeObject<IEnumerable<Messages>>( TempData["messages"].ToString());
+            ViewBag.Room= JsonConvert.DeserializeObject<Room>(TempData["Room"].ToString());
 
             return View(roomMembers);
         }

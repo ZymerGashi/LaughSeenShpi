@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using PusherServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,21 +31,21 @@ namespace LaughSeenShpi.Controllers
 
         
          
-         [HttpGet]
+         [HttpGet("{RoomId}")]
          
           public IEnumerable<Messages> GetMessages(int RoomId)
         {
 
             var messages = _db.Room.Where(s => s.ID == RoomId)
-                .Join(_db.RoomMembers, r => r.ID, rm => rm.MemberRoomId, (r, rm) => new RoomMembers() { MemberID = rm.MemberID, MemberName = rm.MemberName, MemberRoomId = rm.MemberRoomId })
-                .Join(_db.Messages, rm=>rm.MemberRoomId,m=>m.RoomMemberId,(rm,m)=> new Messages() {ID=m.ID,Content=m.Content,RoomMemberId=m.RoomMemberId,SendTime=m.SendTime,SeenTime=m.SeenTime})
-                .ToList();
+            .Join(_db.RoomMembers, r => r.ID, rm => rm.MemberRoomId, (r, rm) => rm)
+            .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m)
+            .ToList();
 
             return messages;
 
         }
 
-        public IActionResult AddMessages(Messages message )
+        public  async Task<IActionResult> AddMessages(Messages message )
         {
 
             message.SeenTime = DateTime.Now;
@@ -52,16 +53,55 @@ namespace LaughSeenShpi.Controllers
 
 
 
+       
+
             _db.Messages. Add(message);
 
             _db.SaveChanges();
 
-            return new ObjectResult(new { status = "success", data = message });
-        }
+            var room = _db.RoomMembers.Where(s=>s.MemberID==message.RoomMemberId)
+  .Join(_db.Room,  rm => rm.MemberRoomId, r => r.ID, (rm,r) => r).FirstOrDefault();
+
+            MessagePlusRoom messagePlusRoom = new MessagePlusRoom { room = room, messages = message };
 
 
 
+            var options = new PusherOptions
+            {
+                Cluster = "eu",
+                Encrypted = true
+            };
+            var pusher = new Pusher(
+                "1126876",
+                "07088996639e59625df1",
+                "588dfb9942c061b04ff6",
+                options
+            );
+            
+           var result = await pusher.TriggerAsync(
+                room.ID.ToString(),
+                "new_message",
+                new { messagePlusRoom },
+                new TriggerOptions() { SocketId=message.socketId});
+            
+
+                return new ObjectResult(new { status = "success", data = message });          
+            }
+
+
+      
 
 
     }
+
+
+    public class MessagePlusRoom
+    {
+
+        public Room room { get; set; }
+
+        public Messages messages { get; set; }
+
+    }
+
 }

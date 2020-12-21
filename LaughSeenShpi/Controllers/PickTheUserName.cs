@@ -27,6 +27,7 @@ namespace LaughSeenShpi.Controllers
         public IActionResult Index(Room room)
         {
             ViewBag.Room = room;
+            TempData["Room"] = JsonConvert.SerializeObject(room);
             return View();
         }
 
@@ -38,16 +39,9 @@ namespace LaughSeenShpi.Controllers
             dbSet.Add(roomMember);
 
             _db.SaveChanges();
-
-
             var messages = GetMessages(roomMember.MemberRoomId);
 
-
-            TempData["messages"] = JsonConvert.SerializeObject( messages);
-
             // ViewBag.messages = messages;
-
-
             //return View("Room/Index",room);
 
             return RedirectToAction("Index", "Room", roomMember);
@@ -64,11 +58,8 @@ namespace LaughSeenShpi.Controllers
                 .ToList();
 
             return messages;
-
-
-
-
         }
+
     }
 
 }
