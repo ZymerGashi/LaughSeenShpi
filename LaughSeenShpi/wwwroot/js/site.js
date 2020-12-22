@@ -23,7 +23,7 @@ $("#SendMessageButton").click(function () {
         }),
         success: (data) => {
             $(".msg_history").append(`<div class="outgoing_msg" >
-                                            <div class="sent_msg" style="word-wrap:hyphenate">
+                                            <div class="sent_msg" style="word-wrap:break-word">
                                                 <p>`
                 + data.data.content + `</p>
                                                 <span class="time_date">` + formatDate(data.data.sendTime)+
@@ -63,8 +63,8 @@ $("#messageHistoryDiv").ready(function () {
         data.forEach(function (data) {
 
             message += `<div class="incoming_msg" > <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                            <div class="received_msg" style="word-wrap:hyphenate">
-<div class="received_withd_msg" style="word-wrap:hyphenate">
+                                            <div class="received_msg" style="word-wrap:break-word">
+<div class="received_withd_msg" style="word-wrap:break-word">
 <span class="small"  style="padding-top:0">` +data.roomMembers.memberName + `  </span>
                                                 <p>`
                 + data.content + `</p>
@@ -86,8 +86,8 @@ $("#messageHistoryDiv").ready(function () {
             group_channel.bind('new_message', function (data) {
                 if (roomId == data.messagePlusRoom.room.ID) {
                     $(".msg_history").append(`<div class="incoming_msg" > <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                            <div class="received_msg" style="word-wrap:hyphenate">
-<div class="received_withd_msg" style="word-wrap:hyphenate">
+                                            <div class="received_msg" style="word-wrap:break-word">
+<div class="received_withd_msg" style="word-wrap:break-word">
 <span class="small"  style="padding-top:0">` + data.messagePlusRoom.messages.RoomMembers.MemberName + `  </span>
                                                 <p>`
                         + data.messagePlusRoom.messages.Content + `</p>

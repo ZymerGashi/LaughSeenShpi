@@ -36,7 +36,7 @@
                                             <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                             <div class="received_msg">
                                                 <span class="small"  style="padding-top:0"> Username </span>
-                                                <div class="received_withd_msg" style="word-wrap:hyphenate">
+                                                <div class="received_withd_msg" style="word-wrap:break-word">
                                                     <p style="margin-bottom:0">Test 1</p>
                                                     <span class="time_date" style="padding-top:0"> Test 1 </span>
                                                 </div>
@@ -52,7 +52,7 @@
                             </div>
                             <div class="type_msg">
                                 <div class="input_msg_write">
-                                    <input type="text" class="write_msg" id="MessageContent" placeholder="Type a message" />
+                                    <input type="text" class="write_msg" id="MessageContent" required placeholder="Type a message" />
                                     <input type="hidden" class="write_msg" id="MessageRoomMemberId" value="@Model.MemberID" placeholder="Type a message" />
                                     <input type="hidden" class="write_msg" id="RoomId" value="@ViewBag.Room.ID" placeholder="Type a message" />
                                     <button type="button" asp-action="Index" id="SendMessageButton" class="msg_send_btn"></button>

@@ -45,52 +45,56 @@ namespace LaughSeenShpi.Controllers
 
         }
 
-        public  async Task<IActionResult> AddMessages(Messages message )
+        public async Task<IActionResult> AddMessages(Messages message)
         {
 
-            message.SeenTime = DateTime.Now;
-            message.SendTime = DateTime.Now; //this needs to be changed in order to have the logic when the message is seen
-
-
-
-       
-
-            _db.Messages. Add(message);
-
-            _db.SaveChanges();
-
-            var messagesPlusSender = _db.Messages.Where(m => m.ID == message.ID).Include(m => m.RoomMembers).Where(m=>m.RoomMembers.MemberID==message.RoomMemberId).FirstOrDefault();
-
-            var room = _db.RoomMembers.Where(s=>s.MemberID==message.RoomMemberId)
-  .Join(_db.Room,  rm => rm.MemberRoomId, r => r.ID, (rm,r) => r).FirstOrDefault();
-
-            MessagePlusRoom messagePlusRoom = new MessagePlusRoom { room = room, messages = messagesPlusSender };
-
-
-
-            var options = new PusherOptions
+            if (message.Content!="")
             {
-                Cluster = "eu",
-                Encrypted = true
-            };
-            var pusher = new Pusher(
-                "1126876",
-                "07088996639e59625df1",
-                "588dfb9942c061b04ff6",
-                options
-            );
-            
-           var result = await pusher.TriggerAsync(
-                room.ID.ToString(),
-                "new_message",
-                new { messagePlusRoom },
-                new TriggerOptions() { SocketId=message.socketId});
-            
 
-                return new ObjectResult(new { status = "success", data = message });          
+                message.SeenTime = DateTime.Now;
+                message.SendTime = DateTime.Now; //this needs to be changed in order to have the logic when the message is seen
+
+
+
+
+
+                _db.Messages.Add(message);
+
+                _db.SaveChanges();
+
+                var messagesPlusSender = _db.Messages.Where(m => m.ID == message.ID).Include(m => m.RoomMembers).Where(m => m.RoomMembers.MemberID == message.RoomMemberId).FirstOrDefault();
+
+                var room = _db.RoomMembers.Where(s => s.MemberID == message.RoomMemberId)
+      .Join(_db.Room, rm => rm.MemberRoomId, r => r.ID, (rm, r) => r).FirstOrDefault();
+
+                MessagePlusRoom messagePlusRoom = new MessagePlusRoom { room = room, messages = messagesPlusSender };
+
+
+
+                var options = new PusherOptions
+                {
+                    Cluster = "eu",
+                    Encrypted = true
+                };
+                var pusher = new Pusher(
+                    "1126876",
+                    "07088996639e59625df1",
+                    "588dfb9942c061b04ff6",
+                    options
+                );
+
+                var result = await pusher.TriggerAsync(
+                     room.ID.ToString(),
+                     "new_message",
+                     new { messagePlusRoom },
+                     new TriggerOptions() { SocketId = message.socketId });
+
+
+                return new ObjectResult(new { status = "success", data = message });
             }
+            return new ObjectResult(new { status = "erroo"});
 
-
+        }
       
 
 

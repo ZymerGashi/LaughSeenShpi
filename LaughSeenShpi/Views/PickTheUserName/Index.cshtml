@@ -12,7 +12,7 @@
                         <label for="exampleInputEmail1" class="form-text" style="font-size:25px">You have joined @ViewBag.Room.Name Please pick a username </label>
                     </div>
                     <div class="col-sm-9 float-left">
-                        <input type="text" class="form-control" asp-for="@Model.MemberName" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your user name here">
+                        <input type="text" class="form-control" asp-for="@Model.MemberName" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="Enter your user name here">
                         <small id="emailHelp" class="form-text text-muted">Enjoy chatting with your friends and your loving ones</small>
                         <input type="hidden" class="form-control" asp-for="@Model.MemberRoomId"  value="@ViewBag.Room.ID" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your user name here">
                     </div>
