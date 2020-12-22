@@ -38,8 +38,8 @@ namespace LaughSeenShpi.Controllers
 
             var messages = _db.Room.Where(s => s.ID == RoomId)
             .Join(_db.RoomMembers, r => r.ID, rm => rm.MemberRoomId, (r, rm) => rm)
-            .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m)
-            .ToList();
+            .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m).Include(rm=>rm.RoomMembers)
+            .ToList().OrderBy(m=>m.SendTime);
 
             return messages;
 
@@ -59,10 +59,12 @@ namespace LaughSeenShpi.Controllers
 
             _db.SaveChanges();
 
+            var messagesPlusSender = _db.Messages.Where(m => m.ID == message.ID).Include(m => m.RoomMembers).Where(m=>m.RoomMembers.MemberID==message.RoomMemberId).FirstOrDefault();
+
             var room = _db.RoomMembers.Where(s=>s.MemberID==message.RoomMemberId)
   .Join(_db.Room,  rm => rm.MemberRoomId, r => r.ID, (rm,r) => r).FirstOrDefault();
 
-            MessagePlusRoom messagePlusRoom = new MessagePlusRoom { room = room, messages = message };
+            MessagePlusRoom messagePlusRoom = new MessagePlusRoom { room = room, messages = messagesPlusSender };
 
 
 

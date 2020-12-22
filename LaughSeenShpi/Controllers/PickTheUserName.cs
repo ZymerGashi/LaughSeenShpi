@@ -28,6 +28,7 @@ namespace LaughSeenShpi.Controllers
         {
             ViewBag.Room = room;
             TempData["Room"] = JsonConvert.SerializeObject(room);
+
             return View();
         }
 
@@ -39,12 +40,12 @@ namespace LaughSeenShpi.Controllers
             dbSet.Add(roomMember);
 
             _db.SaveChanges();
-            var messages = GetMessages(roomMember.MemberRoomId);
 
+            RoomMembers roomMembersWithRoomData = _db.RoomMembers.Where(rm => rm.MemberID == roomMember.MemberID).Include(rm => rm.Room).FirstOrDefault();
             // ViewBag.messages = messages;
             //return View("Room/Index",room);
 
-            return RedirectToAction("Index", "Room", roomMember);
+            return RedirectToAction("Index", "Room", roomMembersWithRoomData);
         }
 
 
@@ -54,7 +55,7 @@ namespace LaughSeenShpi.Controllers
 
             var messages = _db.Room.Where(s => s.ID == RoomId)
                 .Join(_db.RoomMembers, r => r.ID, rm => rm.MemberRoomId, (r, rm) => rm)
-                .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m)
+                .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m).Include(m=>m.RoomMembers)
                 .ToList();
 
             return messages;

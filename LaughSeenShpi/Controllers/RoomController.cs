@@ -11,12 +11,12 @@ namespace LaughSeenShpi.Controllers
 {
     public class RoomController : Controller
     {
-        public IActionResult Index(RoomMembers roomMembers)
+        public IActionResult Index(RoomMembers roomMembersWithRoomData)
         {
             //ViewBag.messages = JsonConvert.DeserializeObject<IEnumerable<Messages>>( TempData["messages"].ToString());
             ViewBag.Room= JsonConvert.DeserializeObject<Room>(TempData["Room"].ToString());
 
-            return View(roomMembers);
+            return View(roomMembersWithRoomData);
         }
     }
 }
