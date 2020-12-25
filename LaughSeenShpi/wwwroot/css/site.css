@@ -1,6 +1,12 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+* {
+    margin:0;
+    padding:0;
+}
+
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -72,9 +78,13 @@ body {
 
 
 .container {
-    max-width: 1170px;
-    margin: auto;
+    max-width: 100%;
+    margin: 0;
+    height: 100%;
 }
+
+
+
 
 img {
     max-width: 100%;
@@ -226,7 +236,7 @@ img {
 
 .mesgs {
     float: left;
-    padding: 30px 15px 0 25px;
+    /*padding: 30px 15px 0 25px;*/
     /*width: 60%;*/
 }
 
@@ -255,7 +265,7 @@ img {
     border: medium none;
     color: #4c4c4c;
     font-size: 15px;
-    min-height: 48px;
+    min-height: 5vh;
     width: 100%;
 }
 
@@ -283,6 +293,8 @@ img {
 }
 
 .msg_history {
-    height: 516px;
+    margin-left:0;
+    max-height: 90vh;
+    min-height:90vh;
     overflow-y: auto;
 }

@@ -12,5 +12,11 @@ namespace LaughSeenShpi.Models
 
         public string Name { get; set; }
 
+        public string MovieUrl { get; set; }
+
+        public double CurrentTime { get; set; }
+
+        public bool PlayTheMovie { get; set; }
+
     }
 }

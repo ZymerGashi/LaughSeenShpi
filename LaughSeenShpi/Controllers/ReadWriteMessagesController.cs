@@ -38,7 +38,7 @@ namespace LaughSeenShpi.Controllers
 
             var messages = _db.Room.Where(s => s.ID == RoomId)
             .Join(_db.RoomMembers, r => r.ID, rm => rm.MemberRoomId, (r, rm) => rm)
-            .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m).Include(rm=>rm.RoomMembers)
+            .Join(_db.Messages, rm => rm.MemberID, m => m.RoomMemberId, (rm, m) => m).Include(rm=>rm.RoomMembers).ThenInclude(rm=>rm.Room)
             .ToList().OrderBy(m=>m.SendTime);
 
             return messages;
@@ -95,7 +95,11 @@ namespace LaughSeenShpi.Controllers
             return new ObjectResult(new { status = "erroo"});
 
         }
-      
+
+
+
+
+
 
 
     }
