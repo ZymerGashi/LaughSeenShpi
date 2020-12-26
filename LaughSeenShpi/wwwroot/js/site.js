@@ -15,7 +15,7 @@ var pusher = new Pusher('07088996639e59625df1', {
 $("#SendMessageButton").click(function () {
     $.ajax({
         type: "POST",
-        url: "/api/ReadWriteMessages",
+        url: "/api/ReadWriteMessages/AddMessages",
         data: JSON.stringify({
             Content: $("#MessageContent").val(),
             RoomMemberId: parseInt($("#MessageRoomMemberId").val()),
@@ -57,7 +57,7 @@ $("#messageHistoryDiv").ready(function () {
     //$("#currentGroup").val(group_id); // update the current group_id to html file...
 
     // get all messages for the group and populate it...
-    $.get("/api/ReadWriteMessages/" + roomId, function (data) {
+    $.get("/api/ReadWriteMessages/GetMessages/" + roomId, function (data) {
         let message = "";
 
 
@@ -105,13 +105,48 @@ $("#messageHistoryDiv").ready(function () {
 
                 scrollDown();
             });
+
+
+
+        group_channel.bind('video_parameters_changed', function (data) {
+
+            //alert('VideoParametersHave changed');
+
+            if (data.room.PlayTheMovie == false) {
+                PauseTheVideo();
+            }
+            else {
+                PlayTheVideo();
+            }
+
+            changeCurrentVideoTime(data.room.CurrentTime);
+
+
     
-
-
-
+        });
 
     });
 
+});
+
+var input = document.getElementById("MessageContent");
+var objDiv = document.getElementById("messageHistoryDiv");
+var video = document.getElementById("movieVideo");
+
+
+
+$("#movie").mouseup(function () {
+    $.ajax({
+        type: "POST",
+        url: "/api/ReadWriteMessages/UpdateRoom/",
+        data: JSON.stringify({
+            ID: parseInt($("#RoomId").val()),
+            CurrentTime: video.currentTime,
+            PlayTheMovie: video.paused
+        }),
+        dataType: 'json',
+        contentType: 'application/json'
+    });
 });
 
 
@@ -119,14 +154,8 @@ $("#messageHistoryDiv").ready(function () {
 
 
 
-
-
-
-
-
 // Get the input field
-var input = document.getElementById("MessageContent");
-var objDiv = document.getElementById("messageHistoryDiv");
+
 
 var options = {  month: 'long', day: 'numeric',hour: 'numeric',minute: 'numeric'};
 // Execute a function when the user releases a key on the keyboard
@@ -155,5 +184,18 @@ var formatDate = function (date) {
 /* do something here */
     var formatedDate = new Date(date);
     return formatedDate.toLocaleString("en-US", options);
+}
+
+var PauseTheVideo = function () {
+    video.pause();
+}
+
+var PlayTheVideo = function () {
+    video.play();
+}
+
+var changeCurrentVideoTime = function (newCurrentTime)
+{
+    video.currentTime = newCurrentTime;
 }
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LaughSeenShpi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ReadWriteMessagesController : ControllerBase
     {
@@ -96,6 +96,35 @@ namespace LaughSeenShpi.Controllers
 
         }
 
+
+        public async  void UpdateRoom(Room room)
+        {
+            var roomFromDb = _db.Room.Where(r=>r.ID==room.ID).FirstOrDefault();
+
+            roomFromDb.CurrentTime = room.CurrentTime;
+            roomFromDb.PlayTheMovie = room.PlayTheMovie;
+
+            _db.SaveChanges();
+
+            var options = new PusherOptions
+            {
+                Cluster = "eu",
+                Encrypted = true
+            };
+            var pusher = new Pusher(
+                "1126876",
+                "07088996639e59625df1",
+                "588dfb9942c061b04ff6",
+                options
+            );
+
+            var result = await pusher.TriggerAsync(
+                 room.ID.ToString(),
+                 "video_parameters_changed",
+                 new { room },
+                 new TriggerOptions() {  });
+
+        }
 
 
 
