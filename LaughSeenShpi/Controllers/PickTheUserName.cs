@@ -46,6 +46,7 @@ namespace LaughSeenShpi.Controllers
             //return View("Room/Index",room);
 
             return RedirectToAction("Index", "Room", roomMembersWithRoomData);
+
         }
 
 
