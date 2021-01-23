@@ -97,12 +97,12 @@ namespace LaughSeenShpi.Controllers
         }
 
 
-        public async  void UpdateRoom(Room room)
+        public async  void UpdateRoom(RoomMembers roomMember)
         {
-            var roomFromDb = _db.Room.Where(r=>r.ID==room.ID).FirstOrDefault();
+            var roomFromDb = _db.Room.Where(r=>r.ID== roomMember.Room.ID).FirstOrDefault();
 
-            roomFromDb.CurrentTime = room.CurrentTime;
-            roomFromDb.PlayTheMovie = room.PlayTheMovie;
+            roomFromDb.CurrentTime = roomMember.Room.CurrentTime;
+            roomFromDb.PlayTheMovie = roomMember.Room.PlayTheMovie;
 
             _db.SaveChanges();
 
@@ -119,9 +119,9 @@ namespace LaughSeenShpi.Controllers
             );
 
             var result = await pusher.TriggerAsync(
-                 room.ID.ToString(),
+                 roomMember.Room.ID.ToString(),
                  "video_parameters_changed",
-                 new { room },
+                 new { roomMember },
                  new TriggerOptions() {  });
 
         }

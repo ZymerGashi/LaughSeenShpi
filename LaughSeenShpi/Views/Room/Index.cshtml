@@ -27,7 +27,7 @@
                                                     @*<IFRAME SRC="" class="col-sm-12 h-100" style="margin-left:0;margin-right:0"  FRAMEBORDER=0 MARGINWIDTH=0 MARGINHEIGHT=0 SCROLLING=NO  allowfullscreen>
                                                     </IFRAME>*@
 
-                                                <video id="movieVideo" src="@Model.Room.MovieUrl" class="col-sm-12 h-100" style="margin-left:0;margin-right:0; height:100vh;" controls> </video>
+                                                <video id="movieVideo" muted="muted"  src="@Model.Room.MovieUrl" class="col-sm-12 h-100" style="margin-left:0;margin-right:0; height:100vh;" controls> </video>
 
                                             </div>
 
@@ -38,6 +38,14 @@
                                                 <div class="msg_history" id="messageHistoryDiv" style="padding:0;margin:0;">
 
                            
+
+
+                                                    @*<div class="col-sm-12 text-white-50 text-sm-center">
+                                                        <span><i>Someone paused the video</i> </span>
+
+
+                                                    </div>*@
+
                               
                                                     @*<div class="outgoing_msg">
                                    
@@ -68,14 +76,13 @@
                                                     <div class="input_msg_write">
                                                         <input type="text" class="write_msg text-white" id="MessageContent" required placeholder="Type a message" />
                                                         <input type="hidden" class="write_msg text-white" id="MessageRoomMemberId" value="@Model.MemberID" placeholder="Type a message" />
+                                                        <input type="hidden" class="write_msg text-white" id="MessageRoomMemberName" value="@Model.MemberName" placeholder="Type a message" />
                                                         <input type="hidden" class="write_msg" id="RoomId" value="@Model.Room.ID" placeholder="Type a message" />
                                                         <button type="button" asp-action="Index" id="SendMessageButton" class="msg_send_btn"> <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                 </div>
 
 

@@ -42,7 +42,6 @@ $("#SendMessageButton").click(function () {
 });
 
 
-
 // When a user clicks on a group, Load messages for that particular group.
 $("#messageHistoryDiv").ready(function () {
 
@@ -112,17 +111,36 @@ $("#messageHistoryDiv").ready(function () {
 
             //alert('VideoParametersHave changed');
 
-            if (data.room.PlayTheMovie == false) {
+            changeCurrentVideoTime(data.roomMember.Room.CurrentTime);
+
+            if (data.roomMember.Room.PlayTheMovie == false) {
                 PauseTheVideo();
+
+                $(".msg_history").append(`<div class="col-sm-12 text-white-50 text-sm-center">
+                                                        <span><i>`+ data.roomMember.MemberName + ` paused the video
+</i> </span>
+
+
+                                                    </div>
+`);
+
             }
             else {
                 PlayTheVideo();
+                $(".msg_history").append(`<div class="col-sm-12 text-white-50 text-sm-center">
+                                                        <span><i>`+ data.roomMember.MemberName + ` played the video
+</i> </span>
+
+
+                                                    </div>
+`);
+
+
             }
 
-            changeCurrentVideoTime(data.room.CurrentTime);
 
+            scrollDown();
 
-    
         });
 
     });
@@ -135,14 +153,37 @@ var video = document.getElementById("movieVideo");
 
 
 
+//$("#movie").mouseup(function () {
+//    $.ajax({
+//        type: "POST",
+//        url: "/api/ReadWriteMessages/UpdateRoom/",
+//        data: JSON.stringify({
+//            ID: parseInt($("#RoomId").val()),
+//            CurrentTime: video.currentTime,
+//            PlayTheMovie: video.paused
+//        }),
+//        dataType: 'json',
+//        contentType: 'application/json'
+//    });
+//});
+
+
+
+
 $("#movie").mouseup(function () {
     $.ajax({
         type: "POST",
         url: "/api/ReadWriteMessages/UpdateRoom/",
         data: JSON.stringify({
-            ID: parseInt($("#RoomId").val()),
-            CurrentTime: video.currentTime,
-            PlayTheMovie: video.paused
+            MemberID: parseInt($("#MessageRoomMemberId").val()),
+            MemberName: $("#MessageRoomMemberName").val(),
+            MemberRoomId: parseInt($("#RoomId").val()),
+            Room:
+            {
+                ID: parseInt($("#RoomId").val()),
+                CurrentTime: video.currentTime,
+                PlayTheMovie: video.paused
+            }
         }),
         dataType: 'json',
         contentType: 'application/json'
@@ -153,11 +194,46 @@ $("#movie").mouseup(function () {
 
 
 
+//This is how I can use the onplay and onpause events so I can handle also the case when the user plays/pauses the video from the video controls. The drawback is that it causes loops...
 
-// Get the input field
+//$("#movieVideo").on('play', function () {
+
+//    $.ajax({
+//        type: "POST",
+//        url: "/api/ReadWriteMessages/UpdateRoom/",
+//        data: JSON.stringify({
+//            ID: parseInt($("#RoomId").val()),
+//            CurrentTime: video.currentTime,
+//            PlayTheMovie: true
+//        }),
+//        dataType: 'json',
+//        contentType: 'application/json'
+//    });
+//});
+
+//$("#movieVideo").on('pause', function () {
+
+//    $.ajax({
+//        type: "POST",
+//        url: "/api/ReadWriteMessages/UpdateRoom/",
+//        data: JSON.stringify({
+//            ID: parseInt($("#RoomId").val()),
+//            CurrentTime: video.currentTime,
+//            PlayTheMovie: false
+//        }),
+//        dataType: 'json',
+//        contentType: 'application/json'
+//    });
+//});
 
 
-var options = {  month: 'long', day: 'numeric',hour: 'numeric',minute: 'numeric'};
+
+
+
+
+
+
+
 // Execute a function when the user releases a key on the keyboard
 input.addEventListener("keyup", function (event) {
     // Number 13 is the "Enter" key on the keyboard
@@ -179,7 +255,7 @@ var scrollDown = function (response) {
     objDiv.scrollTop = objDiv.scrollHeight;
 }
 
-
+var options = { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 var formatDate = function (date) {
 /* do something here */
     var formatedDate = new Date(date);
